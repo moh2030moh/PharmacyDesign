@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMS Pharmacy Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #f4f7f6;
+            --white: #ffffff;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --blue-card: #0f72e5;
+            --teal-card: #14b8a6;
+            --blue-btn: #0f72e5;
+            --border-color: #e2e8f0;
+            --error-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation */
+        .navbar {
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #4a148c;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-dark);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification {
+            position: relative;
+            background: #f1f5f9;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .notification .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.65rem;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1300px;
+            margin: 30px auto;
+            padding: 0 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .stat-info h4 {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .stat-info h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .stat-info .positive { color: #10b981; }
+        .stat-info .negative { color: #ef4444; }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .icon-teal { background: #e0f2f1; color: #14b8a6; }
+        .icon-blue { background: #e0f2fe; color: #0ea5e9; }
+        .icon-orange { background: #ffedd5; color: #f97316; }
+        .icon-lightblue { background: #e0f2fe; color: #3b82f6; }
+
+        /* Main Content Layout */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .action-cards-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Colored Action Cards */
+        .action-card {
+            border-radius: 20px;
+            padding: 30px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 200px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .card-blue { background: linear-gradient(135deg, #1e88e5, #0d47a1); }
+        .card-teal { background: linear-gradient(135deg, #20c997, #0ca678); }
+
+        .action-card::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .card-content {
+            z-index: 2;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-text h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .card-text p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            max-width: 80%;
+        }
+
+        .btn-white {
+            background: var(--white);
+            color: var(--text-dark);
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-white:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+        }
+
+        .card-icon-large {
+            font-size: 3rem;
+            opacity: 0.8;
+            margin-right: 20px;
+        }
+
+        /* --- Ad Banner Section --- */
+        .ad-container {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            position: relative;
+            height: 100%;
+            min-height: 420px;
+        }
+
+        .ad-slider {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .ad-slide {
+            min-width: 100%;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            background-color: white;
+        }
+
+        .ad-image-wrapper {
+            height: 60%;
+            min-height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .ad-image-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to top, rgba(255,255,255,1), transparent);
+        }
+
+        .ad-content-wrapper {
+            padding: 20px 25px 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .badge-offer {
+            background: #e0f2fe;
+            color: var(--blue-btn);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 10px;
+            width: fit-content;
+        }
+
+        .ad-content-wrapper h2 {
+            font-size: 1.6rem;
+            color: #0f172a;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .ad-content-wrapper p {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: var(--blue-btn);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+        .btn-primary:hover {
+            background: #0d47a1;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.2);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: var(--blue-btn);
+            width: 20px;
+            border-radius: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background: #0f172a;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #b3c5df;
+        }
+
+        .footer-center {
+            font-weight: 600;
+            border-bottom: 2px solid white;
+            padding-bottom: 2px;
+        }
+
+        .footer-right {
+            max-width: 400px;
+            text-align: right;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        /* --- Approval Modal Styles --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: var(--white);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            width: 60px;
+            height: 60px;
+            background: #e0f2fe;
+            color: var(--blue-btn);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 20px;
+        }
+
+        .modal-box h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .modal-box p {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: 0.3s;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .modal-input:focus {
+            border-color: var(--blue-btn);
+        }
+
+        .modal-input.error {
+            border-color: var(--error-color);
+        }
+
+        .error-msg {
+            color: var(--error-color);
+            font-size: 0.8rem;
+            margin-top: 8px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .btn-cancel {
+            background: #f1f5f9;
+            color: var(--text-gray);
+        }
+
+        .btn-cancel:hover {
+            background: #e2e8f0;
+            color: var(--text-dark);
+        }
+
+        .btn-submit {
+            background: var(--blue-btn);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #0d47a1;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .content-layout { grid-template-columns: 1fr; }
+            .ad-container { min-height: 350px; }
+        }
+
+        @media (max-width: 768px) {
+            .stats-row { grid-template-columns: 1fr; }
+            .navbar { flex-direction: column; gap: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            footer { flex-direction: column; gap: 15px; text-align: center; }
+            .footer-right { text-align: center; }
+            .card-content { flex-direction: column; align-items: flex-start; }
+            .card-icon-large { margin-top: 20px; margin-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo">
+                <i class="fas fa-heartbeat" style="color: #6b21a8;"></i> DMS
+            </div>
+            <div class="nav-links">
+                <a href="#">Pharmacy</a>
+                <a href="#">Claims</a>
+                <a href="#">Chronic Delivery</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="notification">
+                <i class="fas fa-bell"></i>
+                <span class="badge">0</span>
+            </div>
+            <div class="user-profile">
+                Hello Training-ph1 <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Stats Cards -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h4>Today's Prescriptions</h4>
+                    <h2>47</h2>
+                    <p class="positive">+12% from yesterday</p>
+                </div>
+                <div class="stat-icon icon-teal">
+                    <i class="far fa-file-alt"></i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h4>Active Patients</h4>
+                    <h2>1,284</h2>
+                    <p class="positive">+3 new today</p>
+                </div>
+                <div class="stat-icon icon-blue">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h4>Inventory Items</h4>
+                    <h2>842</h2>
+                    <p class="negative">5 items low stock</p>
+                </div>
+                <div class="stat-icon icon-orange">
+                    <i class="fas fa-box-open"></i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h4>Today's Revenue</h4>
+                    <h2>$2,847</h2>
+                    <p class="positive">+18% from average</p>
+                </div>
+                <div class="stat-icon icon-lightblue">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Layout: Action Cards & Ad Banner -->
+        <div class="content-layout">
+            
+            <!-- Left Side: Action Cards -->
+            <div class="action-cards-column">
+                
+                <!-- Has Approval Card (Modified) -->
+                <div class="action-card card-blue">
+                    <div class="card-content">
+                        <div class="card-text">
+                            <h3>Has Approval</h3>
+                            <p>Process approval prescriptions for patients quickly and efficiently.</p>
+                            <!-- Button triggers Modal -->
+                            <button onclick="openApprovalModal()" class="btn-white">Start Now <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                        <div class="card-icon-large">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prescription Dispensing Card (Modified) -->
+                <div class="action-card card-teal">
+                    <div class="card-content">
+                        <div class="card-text">
+                            <h3>Prescription Dispensing</h3>
+                            <p>Dispense medicines directly from patient prescription.</p>
+                            <!-- Button redirects directly -->
+                            <button onclick="window.location.href='PrescriptionDispensing.html'" class="btn-white">Start Now <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                        <div class="card-icon-large">
+                            <i class="fas fa-prescription"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Side: Auto-changing Ad Banner -->
+            <div class="ad-container" id="adBannerContainer">
+                <div class="ad-slider" id="adSlider">
+                    
+                    <!-- Slide 1 -->
+                    <div class="ad-slide" onclick="window.location.href='#'">
+                        <div class="ad-image-wrapper" style="background-image: url('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                        <div class="ad-content-wrapper">
+                            <span class="badge-offer">Special Offer</span>
+                            <h2>Better Health <br> Brighter Tomorrow</h2>
+                            <p>Quality medicines for a healthier you. Discover our wide range of trusted pharmaceutical products.</p>
+                            <button class="btn-primary">Learn More <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="ad-slide" onclick="window.location.href='#'">
+                        <div class="ad-image-wrapper" style="background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                        <div class="ad-content-wrapper">
+                            <span class="badge-offer" style="background: #dcfce7; color: #16a34a;">New Arrival</span>
+                            <h2>Advanced Care <br> For Your Family</h2>
+                            <p>Explore our new range of supplements and daily care products curated by health experts.</p>
+                            <button class="btn-primary" style="background: #16a34a;">Shop Now <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="ad-slide" onclick="window.location.href='#'">
+                        <div class="ad-image-wrapper" style="background-image: url('https://images.unsplash.com/photo-1631549916768-4119b2e5f926?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                        <div class="ad-content-wrapper">
+                            <span class="badge-offer" style="background: #ffedd5; color: #ea580c;">Seasonal Care</span>
+                            <h2>Stay Protected <br> This Season</h2>
+                            <p>Get up to 20% off on all seasonal allergy and flu medications. Limited time offer!</p>
+                            <button class="btn-primary" style="background: #ea580c;">Claim Offer <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Slider Dots -->
+                <div class="slider-dots" id="sliderDots">
+                    <div class="dot active" onclick="goToSlide(0, event)"></div>
+                    <div class="dot" onclick="goToSlide(1, event)"></div>
+                    <div class="dot" onclick="goToSlide(2, event)"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-left">
+            <i class="fas fa-heartbeat"></i> DMS
+        </div>
+        <div class="footer-center">
+            Contact
+        </div>
+        <div class="footer-right">
+            Since 2002 we have been providing tailor made Medical Health Care and employee benefit plans as we...
+        </div>
+    </footer>
+
+    <!-- Approval Modal -->
+    <div class="modal-overlay" id="approvalModal">
+        <div class="modal-box">
+            <div class="modal-icon">
+                <i class="fas fa-key"></i>
+            </div>
+            <h3>Enter Approval Number</h3>
+            <p>Please enter a valid approval number to proceed. (Valid numbers: 1 to 7)</p>
+            
+            <input type="text" id="approvalInput" class="modal-input" placeholder="e.g. 1234567" maxlength="7">
+            <div class="error-msg" id="errorMsg">Invalid Approval Number! Please try again.</div>
+            
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeApprovalModal()">Cancel</button>
+                <button class="btn-submit" onclick="submitApproval()">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Ad Slider Logic ---
+        const slider = document.getElementById('adSlider');
+        const dots = document.querySelectorAll('.dot');
+        let currentSlide = 0;
+        const totalSlides = dots.length;
+        let slideInterval;
+
+        function goToSlide(index, event) {
+            if(event) { event.stopPropagation(); }
+            currentSlide = index;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentSlide].classList.add('active');
+            resetTimer();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            goToSlide(currentSlide);
+        }
+
+        function startTimer() {
+            slideInterval = setInterval(nextSlide, 3000);
+        }
+
+        function resetTimer() {
+            clearInterval(slideInterval);
+            startTimer();
+        }
+
+        startTimer();
+
+        const adContainer = document.getElementById('adBannerContainer');
+        adContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        adContainer.addEventListener('mouseleave', startTimer);
+
+        // --- Approval Modal Logic ---
+        const modal = document.getElementById('approvalModal');
+        const input = document.getElementById('approvalInput');
+        const errorMsg = document.getElementById('errorMsg');
+
+        function openApprovalModal() {
+            modal.classList.add('active');
+            input.value = '';
+            input.classList.remove('error');
+            errorMsg.classList.remove('show');
+            // Focus on input after modal opens
+            setTimeout(() => input.focus(), 300);
+        }
+
+        function closeApprovalModal() {
+            modal.classList.remove('active');
+        }
+
+        function submitApproval() {
+            const value = input.value.trim();
+            // Allowed numbers from 1 to 7 (as a single digit) OR "1234567" 
+            const validNumbers = ['1', '2', '3', '4', '5', '6', '7', '1234567'];
+
+            if (validNumbers.includes(value)) {
+                // Success: Redirect to ApprovalPrescription page
+                window.location.href = 'ApprovalPrescription.html';
+            } else {
+                // Error: Show message
+                input.classList.add('error');
+                errorMsg.classList.add('show');
+            }
+        }
+
+        // Allow pressing "Enter" to submit
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                submitApproval();
+            }
+        });
+
+        // Close modal if clicked outside the box
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeApprovalModal();
+            }
+        });
+    </script>
+
+</body>
+</html>

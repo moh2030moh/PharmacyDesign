@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approval Prescription</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-light: #e0f2fe;
+            --primary-blue: #38bdf8;
+            --primary-dark: #0284c7;
+            --bg-color: #f0f9ff;
+            --text-dark: #1e293b;
+            --text-light: #475569;
+            --white: #ffffff;
+            --border-color: #bae6fd;
+            --danger: #ef4444;
+            --orange: #f97316;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* --- Top Navigation (Header) --- */
+        .navbar {
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            font-family: 'Poppins', sans-serif;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #4a148c;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-dark);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification {
+            position: relative;
+            background: #f1f5f9;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .notification .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.65rem;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* --- Main Content Area --- */
+        .main-wrapper {
+            flex: 1;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* --- Patient Info Section --- */
+        .patient-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .patient-main-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--primary-light);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .patient-main-info:hover {
+            background: #bae6fd;
+        }
+
+        .patient-summary {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .patient-summary .info-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .patient-summary .info-block span {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .patient-summary .info-block strong {
+            font-size: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .patient-main-info .toggle-icon {
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .patient-main-info.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .patient-details-collapse {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background: var(--white);
+        }
+
+        .patient-details-collapse.show {
+            max-height: 300px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .patient-details-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .patient-details-grid .detail-item {
+            display: flex;
+            flex-direction: column;
+            background: var(--primary-light);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .patient-details-grid .detail-item span {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .patient-details-grid .detail-item strong {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        /* --- Top Search & Tabs Section --- */
+        .top-bar {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+        }
+
+        .search-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 15px;
+            flex: 1;
+        }
+
+        .input-wrapper i {
+            color: var(--text-light);
+            margin-right: 10px;
+        }
+
+        .input-wrapper input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .btn-search {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+        
+        .btn-search:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .tabs-container {
+            display: flex;
+            gap: 15px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .tab-btn {
+            background: var(--primary-light);
+            border: 1px solid var(--primary-dark);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-dark);
+        }
+
+        /* --- Medicine Item Card --- */
+        .medicine-card {
+            background-color: #e0f2fe;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .med-top-section {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .med-image-box {
+            background: var(--white);
+            width: 90px;
+            height: 90px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-dark);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+        }
+
+        .med-image-box i {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .med-image-box span {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .med-inputs-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            flex: 1;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-group label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--white);
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .input-group input.editable {
+            border: 2px solid var(--primary-blue);
+            box-shadow: 0 0 5px rgba(56, 189, 248, 0.3);
+        }
+        
+        .input-group input:read-only {
+            background-color: #f8fafc;
+            color: var(--text-light);
+            cursor: not-allowed;
+            border-color: #e2e8f0;
+        }
+
+        .med-accordion {
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--primary-dark);
+            transition: 0.3s;
+        }
+
+        .accordion-header:hover {
+            background: #f8fafc;
+        }
+
+        .accordion-header i {
+            transition: transform 0.3s;
+        }
+
+        .accordion-header.active i {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: #f8fafc;
+        }
+        
+        .accordion-content.show {
+            max-height: 300px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .details-grid span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-bottom: 2px;
+        }
+
+        .details-grid strong {
+            color: var(--text-dark);
+        }
+
+        .med-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .badge-individual {
+            background: var(--primary-dark);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .btn-remove {
+            background: transparent;
+            color: var(--danger);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-remove:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Totals Section --- */
+        .totals-container {
+            background: #e0f2fe;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 250px;
+            flex-shrink: 0;
+        }
+
+        .btn-large {
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-dispense {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        .btn-dispense:hover {
+            background: #0369a1;
+        }
+
+        .btn-reset {
+            background: var(--orange);
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #ea580c;
+        }
+
+        .totals-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .total-row {
+            background: var(--white);
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        
+        .total-row span:first-child {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #0f172a;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #b3c5df;
+        }
+
+        .footer-center {
+            font-weight: 600;
+            border-bottom: 2px solid white;
+            padding-bottom: 2px;
+        }
+
+        .footer-right {
+            max-width: 400px;
+            text-align: right;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 15px; padding: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .patient-summary { flex-direction: column; gap: 15px; align-items: flex-start; }
+            .patient-details-grid { grid-template-columns: 1fr; }
+            .med-top-section { flex-direction: column; }
+            .med-inputs-grid { grid-template-columns: 1fr 1fr; width: 100%; }
+            .totals-container { flex-direction: column; }
+            .action-buttons { width: 100%; flex-direction: row; }
+            .totals-grid { grid-template-columns: 1fr; }
+            .details-grid { grid-template-columns: 1fr 1fr; }
+            footer { flex-direction: column; gap: 15px; text-align: center; }
+            .footer-right { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation (Header) -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo">
+                <i class="fas fa-heartbeat" style="color: #6b21a8;"></i> DMS
+            </div>
+            <div class="nav-links">
+                <a href="#">Pharmacy</a>
+                <a href="#" class="active">Claims</a>
+                <a href="#">Chronic Delivery</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="notification">
+                <i class="fas fa-bell"></i>
+                <span class="badge">0</span>
+            </div>
+            <div class="user-profile">
+                Hello Training-ph1 <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+        <div class="main-container">
+            
+            <!-- Patient Information Section -->
+            <div class="patient-card">
+                <!-- Always visible part -->
+                <div class="patient-main-info" onclick="togglePatientDetails(this)">
+                    <div class="patient-summary">
+                        <div class="info-block">
+                            <span>Card Number</span>
+                            <strong>1234-5678-9012</strong>
+                        </div>
+                        <div class="info-block">
+                            <span>Patient Name</span>
+                            <strong>Mohamed Mohamed</strong>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                
+                <!-- Collapsible part -->
+                <div class="patient-details-collapse">
+                    <div class="patient-details-grid">
+                        <div class="detail-item">
+                            <span>Start Date</span>
+                            <strong>1/1/2024</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Birth Date</span>
+                            <strong>2/5/2000</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>End Date</span>
+                            <strong>12/11/2026</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Comp Name</span>
+                            <strong>DMS</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Company Percent</span>
+                            <strong>75%</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Search & Tab -->
+            <div class="top-bar">
+                <div class="search-area">
+                    <div class="input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search for medicine...">
+                    </div>
+                    <button class="btn-search"><i class="fas fa-search"></i> Search</button>
+                </div>
+
+                <div class="tabs-container">
+                    <button class="tab-btn"><i class="fas fa-check-circle"></i> Normal Dispense</button>
+                </div>
+            </div>
+
+            <!-- Medicine 1: Amoxicillin -->
+            <div class="medicine-card">
+                <div class="med-top-section">
+                    <div class="med-image-box">
+                        <i class="fas fa-box-open"></i>
+                        <span>Amoxicillin</span>
+                    </div>
+                    <div class="med-inputs-grid">
+                        <div class="input-group">
+                            <label>Package Price</label>
+                            <input type="number" value="300" class="editable">
+                        </div>
+                        <div class="input-group">
+                            <label>Dose</label>
+                            <input type="text" value="2" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Duration</label>
+                            <input type="text" value="10" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Total Duration</label>
+                            <input type="text" value="10" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="med-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Amoxicillin 500 mg</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="details-grid">
+                            <div><span>Medicin Code</span><strong>132525</strong></div>
+                            <div><span>Name</span><strong>dcfghdg</strong></div>
+                            <div><span>Dosage</span><strong>2</strong></div>
+                            <div><span>Package Size</span><strong>3</strong></div>
+                            <div><span>Unit Number</span><strong>2</strong></div>
+                            <div><span>Unit Price</span><strong>25</strong></div>
+                            <div><span>Approved Quantity</span><strong>3</strong></div>
+                            <div><span>Group</span><strong>1</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="med-footer">
+                    <span class="badge-individual">Individual Dispense</span>
+                    <button class="btn-remove"><i class="fas fa-trash-alt"></i> Remove Medicine</button>
+                </div>
+            </div>
+
+            <!-- Medicine 2: Paracetamol -->
+            <div class="medicine-card">
+                <div class="med-top-section">
+                    <div class="med-image-box">
+                        <i class="fas fa-tablets"></i>
+                        <span>Paracetamol</span>
+                    </div>
+                    <div class="med-inputs-grid">
+                        <div class="input-group">
+                            <label>Package Price</label>
+                            <input type="number" value="50" class="editable">
+                        </div>
+                        <div class="input-group">
+                            <label>Dose</label>
+                            <input type="text" value="1" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Duration</label>
+                            <input type="text" value="5" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Total Duration</label>
+                            <input type="text" value="5" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="med-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Paracetamol 500 mg</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="details-grid">
+                            <div><span>Medicin Code</span><strong>982311</strong></div>
+                            <div><span>Name</span><strong>Panadol</strong></div>
+                            <div><span>Dosage</span><strong>1</strong></div>
+                            <div><span>Package Size</span><strong>1</strong></div>
+                            <div><span>Unit Number</span><strong>1</strong></div>
+                            <div><span>Unit Price</span><strong>50</strong></div>
+                            <div><span>Approved Quantity</span><strong>1</strong></div>
+                            <div><span>Group</span><strong>2</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="med-footer">
+                    <span class="badge-individual">Individual Dispense</span>
+                    <button class="btn-remove"><i class="fas fa-trash-alt"></i> Remove Medicine</button>
+                </div>
+            </div>
+
+            <!-- Medicine 3: Vitamin D3 -->
+            <div class="medicine-card">
+                <div class="med-top-section">
+                    <div class="med-image-box">
+                        <i class="fas fa-capsules"></i>
+                        <span>Vitamin D3</span>
+                    </div>
+                    <div class="med-inputs-grid">
+                        <div class="input-group">
+                            <label>Package Price</label>
+                            <input type="number" value="120" class="editable">
+                        </div>
+                        <div class="input-group">
+                            <label>Dose</label>
+                            <input type="text" value="1" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Duration</label>
+                            <input type="text" value="30" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Total Duration</label>
+                            <input type="text" value="30" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="med-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Vitamin D3 1000 IU</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="details-grid">
+                            <div><span>Medicin Code</span><strong>776655</strong></div>
+                            <div><span>Name</span><strong>Vit D3</strong></div>
+                            <div><span>Dosage</span><strong>1</strong></div>
+                            <div><span>Package Size</span><strong>1</strong></div>
+                            <div><span>Unit Number</span><strong>1</strong></div>
+                            <div><span>Unit Price</span><strong>120</strong></div>
+                            <div><span>Approved Quantity</span><strong>1</strong></div>
+                            <div><span>Group</span><strong>2</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="med-footer">
+                    <span class="badge-individual">Individual Dispense</span>
+                    <button class="btn-remove"><i class="fas fa-trash-alt"></i> Remove Medicine</button>
+                </div>
+            </div>
+
+            <!-- Totals Section -->
+            <div class="totals-container">
+                <div class="action-buttons">
+                    <button class="btn-large btn-dispense">Dispense All</button>
+                    <button class="btn-large btn-reset">Reset</button>
+                </div>
+                <div class="totals-grid">
+                    <div class="total-row"><span>Total</span> <span>4500</span></div>
+                    <div class="total-row"><span>Total cash</span> <span>200</span></div>
+                    <div class="total-row"><span>co-Payment</span> <span>4300</span></div>
+                    <div class="total-row"><span>Value Credit</span> <span>200</span></div>
+                    <div class="total-row"><span>Over Insurance</span> <span>0</span></div>
+                    <div class="total-row"><span>Cash</span> <span>200</span></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-left">
+            <i class="fas fa-heartbeat"></i> DMS
+        </div>
+        <div class="footer-center">
+            Contact
+        </div>
+        <div class="footer-right">
+            Since 2002 we have been providing tailor made Medical Health Care and employee benefit plans as we...
+        </div>
+    </footer>
+
+    <script>
+        // Patient Details Accordion Logic
+        function togglePatientDetails(headerElement) {
+            const content = headerElement.nextElementSibling;
+            
+            content.classList.toggle('show');
+            headerElement.classList.toggle('active');
+        }
+
+        // Accordion Logic for Med Details
+        function toggleAccordion(headerElement) {
+            const content = headerElement.nextElementSibling;
+            const icon = headerElement.querySelector('i');
+            
+            content.classList.toggle('show');
+            headerElement.classList.toggle('active');
+            
+            if (content.classList.contains('show')) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        }
+    </script>
+
+</body>
+</html>
