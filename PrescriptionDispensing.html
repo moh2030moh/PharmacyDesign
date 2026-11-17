@@ -31,23 +31,25 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-dark);
-            padding: 20px;
+            padding: 15px;
             display: flex;
             justify-content: center;
-            min-height: 100vh;
+            height: 100vh; /* Fixed height to prevent page scroll */
+            overflow: hidden; /* Hide outer scrollbar */
         }
 
         .main-layout {
             width: 100%;
             max-width: 1400px;
             display: flex;
-            gap: 20px;
+            gap: 15px;
             align-items: stretch;
             flex-direction: row-reverse;
+            height: 100%;
         }
 
-        .right-column { width: 35%; display: flex; flex-direction: column; gap: 20px; }
-        .left-column { width: 65%; display: flex; flex-direction: column; }
+        .right-column { width: 35%; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; }
+        .left-column { width: 65%; display: flex; flex-direction: column; height: 100%; }
 
         .card {
             background-color: var(--white);
@@ -59,103 +61,135 @@
             overflow: hidden;
         }
 
-        .left-column .card { height: 100%; }
+        .left-column .card { 
+            height: 100%; /* Fill the entire left column height */
+            display: flex;
+            flex-direction: column;
+        }
 
         .card-header {
             background-color: var(--primary-blue);
             color: var(--white);
-            padding: 12px 20px;
-            font-size: 1.1rem;
+            padding: 10px 15px;
+            font-size: 1rem;
             font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
-        .card-body { padding: 20px; flex: 1; overflow-y: auto; }
+        /* Card Body takes remaining space and manages its own scroll */
+        .card-body { 
+            padding: 15px; 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
 
         /* Form Elements */
-        .input-group { margin-bottom: 12px; }
-        .input-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; color: var(--text-dark); }
+        .input-group { margin-bottom: 8px; }
+        .input-group label { display: block; margin-bottom: 3px; font-weight: 600; font-size: 0.8rem; color: var(--text-dark); }
         
         .input-wrapper {
             display: flex; align-items: center; background-color: var(--primary-light);
-            border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 12px;
+            border: 1px solid var(--border-color); border-radius: 8px; padding: 6px 10px;
         }
-        .input-wrapper i { color: var(--primary-dark); margin-right: 8px; font-size: 0.9rem; }
+        .input-wrapper i { color: var(--primary-dark); margin-right: 8px; font-size: 0.85rem; }
         .input-wrapper input {
             border: none; background: transparent; outline: none; width: 100%;
-            font-family: 'Cairo', sans-serif; font-size: 0.9rem; color: var(--text-dark);
+            font-family: 'Cairo', sans-serif; font-size: 0.85rem; color: var(--text-dark);
         }
         .input-wrapper input::placeholder { color: #94a3b8; }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
         /* Patient Accordion */
         .patient-main-name {
             background-color: var(--primary-light); border: 1px solid var(--border-color);
-            border-radius: 8px; padding: 10px 15px; display: flex; justify-content: space-between;
-            align-items: center; cursor: pointer; margin-bottom: 10px; transition: 0.3s;
+            border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between;
+            align-items: center; cursor: pointer; margin-bottom: 8px; transition: 0.3s;
         }
         .patient-main-name:hover { background-color: #bae6fd; }
-        .patient-main-name .name-text { font-weight: 700; font-size: 1rem; color: var(--primary-dark); }
-        .patient-main-name i { color: var(--primary-dark); transition: transform 0.3s; }
+        .patient-main-name .name-text { font-weight: 700; font-size: 0.9rem; color: var(--primary-dark); }
+        .patient-main-name i { color: var(--primary-dark); transition: transform 0.3s; font-size: 0.8rem; }
         .patient-main-name.active i { transform: rotate(180deg); }
 
         .patient-details-collapse {
             max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out;
-            background-color: var(--primary-light); border-radius: 8px; margin-bottom: 15px;
+            background-color: var(--primary-light); border-radius: 8px; margin-bottom: 10px;
         }
         .patient-details-collapse.show { max-height: 500px; border: 1px solid var(--border-color); }
         
-        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 12px; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 10px; }
         .info-item { display: flex; flex-direction: column; }
-        .info-item.span-2 { grid-column: span 2; }
-        .info-item span { font-size: 0.75rem; color: var(--text-light); margin-bottom: 3px; }
+        .info-item span { font-size: 0.7rem; color: var(--text-light); margin-bottom: 2px; }
         .info-item strong {
-            font-size: 0.85rem; color: var(--text-dark); background: var(--white);
-            padding: 4px 8px; border-radius: 6px; text-align: center;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            font-size: 0.8rem; color: var(--text-dark); background: var(--white);
+            padding: 3px 6px; border-radius: 4px; text-align: center;
         }
 
         /* Buttons */
         .btn {
             background-color: var(--primary-blue); color: var(--white); border: none;
-            padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600;
+            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600;
             transition: 0.3s; display: inline-flex; align-items: center;
-            justify-content: center; gap: 8px; font-size: 0.9rem;
+            justify-content: center; gap: 5px; font-size: 0.85rem;
         }
         .btn:hover { background-color: var(--primary-dark); }
-        .btn-find { border-radius: 8px; white-space: nowrap; }
+        .btn-find { border-radius: 6px; white-space: nowrap; }
         .btn-orange { background-color: #f97316; }
         .btn-orange:hover { background-color: #ea580c; }
-        .btn-danger { background-color: transparent; color: var(--danger); padding: 0; font-size: 0.8rem; justify-content: flex-start; }
+        .btn-danger { background-color: transparent; color: var(--danger); padding: 0; font-size: 0.75rem; justify-content: flex-start; }
         .btn-danger:hover { background-color: transparent; text-decoration: underline; }
 
-        /* Permissions Checkboxes */
-        .permissions-area {
-            background-color: var(--primary-light); border: 1px solid var(--border-color);
-            border-radius: 8px; padding: 12px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px;
+        /* Permissions Checkbox */
+        .permission-checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: 0.3s;
         }
-        .permissions-area h4 { font-size: 0.85rem; color: var(--primary-dark); margin-bottom: 4px; }
-        .checkbox-group { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .checkbox-group input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary-dark); }
-        .checkbox-group label { font-size: 0.85rem; font-weight: 600; cursor: pointer; margin: 0; }
+        .permission-checkbox-wrapper:hover {
+            background-color: #f8fafc;
+        }
+        .permission-checkbox-wrapper input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--primary-dark);
+        }
+        .permission-checkbox-wrapper label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            cursor: pointer;
+            margin: 0;
+        }
 
         /* Search Bar Area */
-        .search-area { display: flex; gap: 10px; margin-bottom: 15px; }
+        .search-area { display: flex; gap: 8px; margin-bottom: 10px; flex-shrink: 0; }
         .search-area .input-wrapper { flex: 1; }
 
         /* Tabs Container */
         .tabs-container {
-            display: flex; gap: 10px; margin-bottom: 15px;
-            border-bottom: 2px solid var(--border-color); padding-bottom: 10px;
+            display: flex; gap: 8px; margin-bottom: 10px;
+            border-bottom: 2px solid var(--border-color); padding-bottom: 8px;
+            flex-shrink: 0;
         }
         .tab-btn {
             background: transparent; border: 1px solid var(--border-color);
-            padding: 8px 16px; border-radius: 8px; cursor: pointer;
-            font-weight: 700; color: var(--text-light); transition: 0.3s;
-            display: flex; align-items: center; gap: 8px;
+            padding: 6px 12px; border-radius: 6px; cursor: pointer;
+            font-weight: 700; font-size: 0.8rem; color: var(--text-light); transition: 0.3s;
+            display: flex; align-items: center; gap: 5px;
         }
         .tab-btn.active { background: var(--primary-light); color: var(--primary-dark); border-color: var(--primary-dark); }
         .tab-btn.pending-alert {
@@ -164,141 +198,207 @@
         }
         @keyframes pulse-red {
             0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            70% { box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
             100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
 
         /* Tab Content */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+        .tab-content.active { display: flex; }
 
-        /* Medicine Items */
+        /* --- Registered Medicines (Horizontal Layout) --- */
+        .registered-section {
+            margin-bottom: 10px;
+            background-color: var(--primary-light);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .registered-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .registered-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+
+        .reg-card {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex: 1;
+            min-width: 150px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .reg-card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .reg-card-name {
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .reg-card-type {
+            font-size: 0.65rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .btn-dispense-small {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-dispense-small:hover {
+            background-color: #0369a1;
+        }
+
+        /* --- Medicine Items Scrollable Container --- */
+        .medicine-list-container {
+            flex: 1; /* Takes remaining space */
+            overflow-y: auto; /* Scrolls if content exceeds */
+            padding-right: 5px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        /* Custom Scrollbar */
+        .medicine-list-container::-webkit-scrollbar { width: 6px; }
+        .medicine-list-container::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
+        .medicine-list-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .medicine-list-container::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Medicine Item Styling with Alternating Colors */
         .medicine-item {
-            background-color: var(--primary-light); border: 1px solid var(--border-color);
-            border-radius: 12px; padding: 15px; margin-bottom: 15px; position: relative;
+            border: 1px solid var(--border-color);
+            border-radius: 10px; 
+            padding: 10px; 
+            margin-bottom: 10px; 
+            position: relative;
         }
-        .med-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 15px; }
+
+        .medicine-item:nth-child(odd) { background-color: #bae6fd; }
+        .medicine-item:nth-child(even) { background-color: #f0f9ff; }
+
+        .med-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 10px; }
         .med-image {
-            width: 90px; height: 90px; background-color: var(--white); border-radius: 8px;
+            width: 70px; height: 70px; background-color: var(--white); border-radius: 6px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: var(--primary-dark); font-size: 2rem; border: 1px solid var(--border-color); flex-shrink: 0;
+            color: var(--primary-dark); font-size: 1.5rem; border: 1px solid var(--border-color); flex-shrink: 0;
         }
-        .med-inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; flex: 1; }
+        .med-inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; flex: 1; }
         .med-input-group { display: flex; flex-direction: column; }
-        .med-input-group label { font-size: 0.75rem; margin-bottom: 4px; color: var(--text-light); text-align: center; }
+        .med-input-group label { font-size: 0.7rem; margin-bottom: 3px; color: var(--text-light); text-align: center; }
         .med-input-group input {
-            padding: 6px; border: 1px solid var(--border-color); border-radius: 6px;
-            background-color: var(--white); font-family: 'Cairo', sans-serif; text-align: center; width: 100%;
+            padding: 4px; border: 1px solid var(--border-color); border-radius: 4px;
+            background-color: var(--white); font-family: 'Cairo', sans-serif; text-align: center; width: 100%; font-size: 0.8rem;
         }
         
         /* Medicine Details Accordion */
         .med-accordion-header {
             display: flex; justify-content: space-between; align-items: center;
-            background-color: var(--white); padding: 8px 15px; border-radius: 8px;
-            cursor: pointer; margin-top: 10px; border: 1px solid var(--border-color);
-            font-weight: 700; font-size: 0.9rem; color: var(--primary-dark);
+            background-color: var(--white); padding: 6px 12px; border-radius: 6px;
+            cursor: pointer; margin-top: 8px; border: 1px solid var(--border-color);
+            font-weight: 700; font-size: 0.8rem; color: var(--primary-dark);
             transition: 0.3s;
         }
         .med-accordion-header:hover { background-color: #f8fafc; }
-        .med-accordion-header i { transition: transform 0.3s; font-size: 0.8rem; }
+        .med-accordion-header i { transition: transform 0.3s; font-size: 0.7rem; }
         .med-accordion-header.active i { transform: rotate(180deg); }
         
-        .med-details-collapse {
-            max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out;
-        }
+        .med-details-collapse { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
         .med-details-collapse.show { max-height: 300px; }
         
         .med-details {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-            background-color: rgba(255,255,255,0.6); padding: 10px; border-radius: 8px;
-            margin-top: 5px; text-align: center; font-size: 0.8rem;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+            background-color: rgba(255,255,255,0.6); padding: 8px; border-radius: 6px;
+            margin-top: 5px; text-align: center; font-size: 0.75rem;
             border: 1px solid var(--border-color);
         }
-        .med-details div span { display: block; font-size: 0.7rem; color: var(--text-light); margin-bottom: 2px; }
+        .med-details div span { display: block; font-size: 0.65rem; color: var(--text-light); margin-bottom: 2px; }
         .med-details div strong { color: var(--text-dark); }
         
-        .med-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .med-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
         .status-badge {
-            background: var(--primary-dark); color: white; padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+            background: var(--primary-dark); color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.75rem; font-weight: 600;
         }
         .status-badge.approved { background: var(--success); }
 
         /* Totals */
         .totals-section {
             display: flex; justify-content: space-between; align-items: center;
-            background-color: var(--primary-light); padding: 15px; border-radius: 10px;
-            margin-top: 20px; gap: 20px;
+            background-color: var(--primary-light); padding: 10px; border-radius: 8px;
+            margin-top: auto; /* Pushes to bottom */
+            gap: 15px;
+            flex-shrink: 0; /* Prevents shrinking */
         }
-        .action-buttons { display: flex; flex-direction: column; gap: 10px; flex: 1; }
-        .action-buttons .btn { padding: 12px 20px; font-size: 1rem; width: 100%; }
-        .totals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 15px; flex: 2; }
+        .action-buttons { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        .action-buttons .btn { padding: 10px 15px; font-size: 0.9rem; width: 100%; }
+        .totals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; flex: 2; }
         .total-row {
             display: flex; justify-content: space-between; background-color: var(--white);
-            padding: 5px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
+            padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;
         }
 
-        /* Registered Medicines List */
-        .registered-list { display: flex; flex-direction: column; gap: 12px; }
-        .registered-item {
-            background-color: var(--primary-light); border: 1px solid var(--border-color);
-            border-radius: 10px; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center;
-        }
-        .reg-info { display: flex; align-items: center; gap: 12px; }
-        .reg-icon {
-            width: 35px; height: 35px; background-color: var(--white); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; color: var(--primary-blue);
-            font-size: 1rem; flex-shrink: 0;
-        }
-        .reg-name { font-weight: 700; font-size: 0.95rem; }
-        .reg-type {
-            background-color: var(--white); color: var(--primary-dark); padding: 2px 8px;
-            border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-top: 4px; display: inline-block;
-        }
-        .btn-dispense {
-            background-color: var(--white); color: var(--primary-dark); border: 1px solid var(--primary-dark);
-            padding: 6px 12px; font-size: 0.8rem;
-        }
-        .btn-dispense:hover { background-color: var(--primary-dark); color: var(--white); }
-
-        .section-divider { height: 1px; background-color: var(--border-color); margin: 20px 0; border: none; }
+        .section-divider { height: 1px; background-color: var(--border-color); margin: 15px 0; border: none; }
         .section-title {
-            font-size: 1rem; font-weight: 700; color: var(--primary-dark);
-            margin-bottom: 15px; display: flex; align-items: center; gap: 8px;
+            font-size: 0.9rem; font-weight: 700; color: var(--primary-dark);
+            margin-bottom: 10px; display: flex; align-items: center; gap: 5px;
         }
 
-        /* --- Help & Support Dropdown Styles --- */
+        /* Help & Support Dropdown */
         .help-support-wrapper {
-            margin-top: 15px;
+            margin-top: 10px;
             background-color: var(--white);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             overflow: hidden;
+            flex-shrink: 0;
         }
-
         .help-main-btn {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 15px;
+            padding: 8px 12px;
             background-color: var(--primary-light);
             cursor: pointer;
             font-weight: 700;
+            font-size: 0.85rem;
             color: var(--primary-dark);
             transition: 0.3s;
         }
-
-        .help-main-btn:hover {
-            background-color: #bae6fd;
-        }
-
-        .help-main-btn i {
-            transition: transform 0.3s;
-        }
-
-        .help-main-btn.active i {
-            transform: rotate(180deg);
-        }
-
+        .help-main-btn:hover { background-color: #bae6fd; }
+        .help-main-btn i { transition: transform 0.3s; font-size: 0.8rem; }
+        .help-main-btn.active i { transform: rotate(180deg); }
         .help-menu-content {
             max-height: 0;
             overflow: hidden;
@@ -306,45 +406,41 @@
             background-color: var(--white);
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding: 0 15px;
+            gap: 5px;
+            padding: 0 10px;
         }
-
-        .help-menu-content.show {
-            max-height: 300px;
-            padding: 15px;
-        }
-
+        .help-menu-content.show { max-height: 300px; padding: 10px; }
         .help-menu-content .help-link {
-            background-color: #0461ad; /* Deep Purple from image */
+            background-color: #0461ad;
             color: white;
             text-align: center;
-            padding: 10px;
-            border-radius: 6px;
+            padding: 8px;
+            border-radius: 4px;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 5px;
             transition: 0.3s;
         }
-
-        .help-menu-content .help-link:hover {
-            background-color: #0157c9;
-        }
+        .help-menu-content .help-link:hover { background-color: #0157c9; }
 
         /* Responsive adjustments */
         @media (max-width: 1100px) {
-            .main-layout { flex-direction: column; }
+            body { height: auto; overflow: auto; } /* Allow page scroll on small screens */
+            .main-layout { flex-direction: column; height: auto; }
             .right-column, .left-column { width: 100%; }
             .left-column .card { height: auto; }
+            .medicine-list-container { max-height: 400px; } /* Fixed height for mobile */
         }
         @media (max-width: 768px) {
             .grid-2, .med-inputs, .med-details, .totals-grid { grid-template-columns: 1fr; }
             .totals-section { flex-direction: column; }
             .action-buttons { flex-direction: row; width: 100%; }
+            .registered-row { flex-direction: column; }
+            .reg-card { width: 100%; }
         }
     </style>
 </head>
@@ -383,6 +479,11 @@
                     <i class="fas fa-chevron-down" id="accordion-icon"></i>
                 </div>
 
+                <div class="permission-checkbox-wrapper">
+                    <input type="checkbox" id="perm-external">
+                    <label for="perm-external">روشيته خارجية</label>
+                </div>
+
                 <div class="patient-details-collapse" id="patientDetails">
                     <div class="info-grid">
                         <div class="info-item"><span>Start Date</span><strong>1/1/2024</strong></div>
@@ -403,78 +504,44 @@
                 <div class="grid-2">
                     <div class="input-group">
                         <label>Claim Number</label>
-                        <div class="input-wrapper"><input type="text" value="1212125"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.8rem;"></i></div>
+                        <div class="input-wrapper"><input type="text" value="1212125"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
                     </div>
                     <div class="input-group">
                         <label>Phone Number</label>
-                        <div class="input-wrapper"><input type="text" value="0112566552"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.8rem;"></i></div>
+                        <div class="input-wrapper"><input type="text" value="0112566552"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
                     </div>
                     <div class="input-group">
                         <label>Speciality</label>
-                        <div class="input-wrapper"><input type="text" value="صدى"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.8rem;"></i></div>
+                        <div class="input-wrapper"><input type="text" value="صدى"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
                     </div>
                     <div class="input-group">
                         <label>Diagnosis</label>
-                        <div class="input-wrapper"><input type="text" value="FDGJJSK"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.8rem;"></i></div>
+                        <div class="input-wrapper"><input type="text" value="FDGJJSK"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
                     </div>
                     <div class="input-group">
                         <label>Prescription Date</label>
-                        <div class="input-wrapper"><input type="text" value="10/11/2026"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.8rem;"></i></div>
+                        <div class="input-wrapper"><input type="text" value="10/11/2026"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
                     </div>
                     <div class="input-group">
                         <label>Type</label>
-                        <div class="input-wrapper"><input type="text" value="Daily"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.8rem;"></i></div>
+                        <div class="input-wrapper"><input type="text" value="Daily"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Registered Medicines -->
-        <div class="card" style="flex: 1;">
-            <div class="card-header">
-                <div><i class="fas fa-list-ul"></i> 4. Registered Medicines</div>
-                <i class="fas fa-info-circle"></i>
+        <!-- Help & Support Dropdown -->
+        <div class="help-support-wrapper">
+            <div class="help-main-btn" onclick="toggleHelpMenu(this)">
+                <span>Help & Support <i class="fas fa-question-circle" style="font-size: 0.8rem; margin-left: 5px;"></i></span>
+                <i class="fas fa-chevron-down"></i>
             </div>
-            <div class="card-body">
-                <div class="registered-list">
-                    <div class="registered-item">
-                        <div class="reg-info">
-                            <div class="reg-icon"><i class="fas fa-capsules"></i></div>
-                            <div><div class="reg-name">Amoxicillin 500 mg</div><div class="reg-type">Daily</div></div>
-                        </div>
-                        <button class="btn btn-dispense">Dispense</button>
-                    </div>
-                    <div class="registered-item">
-                        <div class="reg-info">
-                            <div class="reg-icon"><i class="fas fa-capsules"></i></div>
-                            <div><div class="reg-name">Vitamin D3 1000 IU</div><div class="reg-type">Chronic</div></div>
-                        </div>
-                        <button class="btn btn-dispense">Dispense</button>
-                    </div>
-                    <div class="registered-item">
-                        <div class="reg-info">
-                            <div class="reg-icon"><i class="fas fa-tablets"></i></div>
-                            <div><div class="reg-name">Paracetamol 500 mg</div><div class="reg-type">Doctor Flow</div></div>
-                        </div>
-                        <button class="btn btn-dispense">Dispense</button>
-                    </div>
-                </div>
-
-                <!-- Help & Support Section Added Here -->
-                <div class="help-support-wrapper">
-                    <div class="help-main-btn" onclick="toggleHelpMenu(this)">
-                        <span>Help & Support <i class="fas fa-question-circle" style="font-size: 0.9rem; margin-left: 5px;"></i></span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="help-menu-content">
-                        <a href="#" class="help-link">Help</a>
-                        <a href="#" class="help-link"><i class="fas fa-download"></i> Manual</a>
-                        <a href="#" class="help-link"><i class="fas fa-download"></i> Download Video</a>
-                        <a href="#" class="help-link">Technical Support</a>
-                        <a href="#" class="help-link">Edit Profile</a>
-                    </div>
-                </div>
-
+            <div class="help-menu-content">
+                <a href="#" class="help-link">Help</a>
+                <a href="#" class="help-link"><i class="fas fa-download"></i> Manual</a>
+                <a href="#" class="help-link"><i class="fas fa-download"></i> Download Video</a>
+                <a href="#" class="help-link">Technical Support</a>
+                <a href="#" class="help-link">Edit Profile</a>
             </div>
         </div>
 
@@ -490,16 +557,33 @@
             </div>
             <div class="card-body">
                 
-                <!-- Permissions Checkboxes -->
-                <div class="permissions-area">
-                    <h4><i class="fas fa-shield-alt"></i> Permissions</h4>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="perm1" checked>
-                        <label for="perm1">هذا المريض لا يحتاج إلى موافقة</label>
+                <!-- Registered Medicines Section -->
+                <div class="registered-section">
+                    <div class="registered-title">
+                        <i class="fas fa-list-ul"></i> 4. Registered Medicines
                     </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="perm2">
-                        <label for="perm2">روشيته خارجية</label>
+                    <div class="registered-row">
+                        <div class="reg-card">
+                            <div class="reg-card-info">
+                                <span class="reg-card-name">Amoxicillin 500 mg</span>
+                                <span class="reg-card-type">Daily</span>
+                            </div>
+                            <button class="btn-dispense-small">Dispense</button>
+                        </div>
+                        <div class="reg-card">
+                            <div class="reg-card-info">
+                                <span class="reg-card-name">Vitamin D3 1000 IU</span>
+                                <span class="reg-card-type">Chronic</span>
+                            </div>
+                            <button class="btn-dispense-small">Dispense</button>
+                        </div>
+                        <div class="reg-card">
+                            <div class="reg-card-info">
+                                <span class="reg-card-name">Paracetamol 500 mg</span>
+                                <span class="reg-card-type">Doctor Flow</span>
+                            </div>
+                            <button class="btn-dispense-small">Dispense</button>
+                        </div>
                     </div>
                 </div>
 
@@ -525,172 +609,173 @@
                 <!-- Normal Tab Content -->
                 <div id="normal-tab" class="tab-content active">
                     
-                    <!-- Medicine 1 -->
-                    <div class="medicine-item">
-                        <div class="med-header">
-                            <div class="med-image">
-                                <i class="fas fa-box-open"></i>
-                                <span style="font-size: 0.6rem; margin-top: 5px;">Amoxicillin</span>
-                            </div>
-                            <div class="med-inputs">
-                                <div class="med-input-group"><label>Package Price</label><input type="text" value="300"></div>
-                                <div class="med-input-group"><label>Dose</label><input type="text" value="2"></div>
-                                <div class="med-input-group"><label>Duration</label><input type="text" value="10"></div>
-                                <div class="med-input-group"><label>Total Duration</label><input type="text" value="10"></div>
-                            </div>
-                        </div>
+                    <!-- Scrollable Medicine List Container -->
+                    <div class="medicine-list-container">
                         
-                        <!-- Accordion for Med Details -->
-                        <div class="med-accordion-header" onclick="toggleMedDetails('med1')">
-                            <span>Amoxicillin 500 mg</span>
-                            <i class="fas fa-chevron-down" id="icon-med1"></i>
-                        </div>
-                        <div class="med-details-collapse" id="med1">
-                            <div class="med-details">
-                                <div><span>Medicin Code</span><strong>132525</strong></div>
-                                <div><span>Name</span><strong>dcfghdg</strong></div>
-                                <div><span>Dosage</span><strong>2</strong></div>
-                                <div><span>Package Size</span><strong>3</strong></div>
-                                <div><span>Unit Number</span><strong>2</strong></div>
-                                <div><span>Unit Price</span><strong>25</strong></div>
-                                <div><span>Approved Quantity</span><strong>3</strong></div>
-                                <div><span>Group</span><strong>1</strong></div>
+                        <!-- Medicine 1 -->
+                        <div class="medicine-item">
+                            <div class="med-header">
+                                <div class="med-image">
+                                    <i class="fas fa-box-open"></i>
+                                    <span style="font-size: 0.55rem; margin-top: 3px;">Amoxicillin</span>
+                                </div>
+                                <div class="med-inputs">
+                                    <div class="med-input-group"><label>Package Price</label><input type="text" value="300"></div>
+                                    <div class="med-input-group"><label>Dose</label><input type="text" value="2"></div>
+                                    <div class="med-input-group"><label>Duration</label><input type="text" value="10"></div>
+                                    <div class="med-input-group"><label>Total Duration</label><input type="text" value="10"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="med-accordion-header" onclick="toggleMedDetails('med1')">
+                                <span>Amoxicillin 500 mg</span>
+                                <i class="fas fa-chevron-down" id="icon-med1"></i>
+                            </div>
+                            <div class="med-details-collapse" id="med1">
+                                <div class="med-details">
+                                    <div><span>Medicin Code</span><strong>132525</strong></div>
+                                    <div><span>Name</span><strong>dcfghdg</strong></div>
+                                    <div><span>Dosage</span><strong>2</strong></div>
+                                    <div><span>Package Size</span><strong>3</strong></div>
+                                    <div><span>Unit Number</span><strong>2</strong></div>
+                                    <div><span>Unit Price</span><strong>25</strong></div>
+                                    <div><span>Approved Quantity</span><strong>3</strong></div>
+                                    <div><span>Group</span><strong>1</strong></div>
+                                </div>
+                            </div>
+
+                            <div class="med-footer">
+                                <span class="status-badge">Individual Dispense</span>
+                                <button class="btn btn-danger"><i class="fas fa-trash"></i> Remove Medicine</button>
                             </div>
                         </div>
 
-                        <div class="med-footer">
-                            <span class="status-badge">Individual Dispense</span>
-                            <button class="btn btn-danger"><i class="fas fa-trash"></i> Remove Medicine</button>
+                        <!-- Medicine 2 -->
+                        <div class="medicine-item">
+                            <div class="med-header">
+                                <div class="med-image">
+                                    <i class="fas fa-tablets"></i>
+                                    <span style="font-size: 0.55rem; margin-top: 3px;">Paracetamol</span>
+                                </div>
+                                <div class="med-inputs">
+                                    <div class="med-input-group"><label>Package Price</label><input type="text" value="50"></div>
+                                    <div class="med-input-group"><label>Dose</label><input type="text" value="1"></div>
+                                    <div class="med-input-group"><label>Duration</label><input type="text" value="5"></div>
+                                    <div class="med-input-group"><label>Total Duration</label><input type="text" value="5"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="med-accordion-header" onclick="toggleMedDetails('med2')">
+                                <span>Paracetamol 500 mg</span>
+                                <i class="fas fa-chevron-down" id="icon-med2"></i>
+                            </div>
+                            <div class="med-details-collapse" id="med2">
+                                <div class="med-details">
+                                    <div><span>Medicin Code</span><strong>982311</strong></div>
+                                    <div><span>Name</span><strong>Panadol</strong></div>
+                                    <div><span>Dosage</span><strong>1</strong></div>
+                                    <div><span>Package Size</span><strong>1</strong></div>
+                                    <div><span>Unit Number</span><strong>1</strong></div>
+                                    <div><span>Unit Price</span><strong>50</strong></div>
+                                    <div><span>Approved Quantity</span><strong>1</strong></div>
+                                    <div><span>Group</span><strong>2</strong></div>
+                                </div>
+                            </div>
+
+                            <div class="med-footer">
+                                <span class="status-badge">Individual Dispense</span>
+                                <button class="btn btn-danger"><i class="fas fa-trash"></i> Remove Medicine</button>
+                            </div>
                         </div>
+
+                        <!-- Medicine 3 -->
+                        <div class="medicine-item">
+                            <div class="med-header">
+                                <div class="med-image">
+                                    <i class="fas fa-capsules"></i>
+                                    <span style="font-size: 0.55rem; margin-top: 3px;">Vitamin D3</span>
+                                </div>
+                                <div class="med-inputs">
+                                    <div class="med-input-group"><label>Package Price</label><input type="text" value="120"></div>
+                                    <div class="med-input-group"><label>Dose</label><input type="text" value="1"></div>
+                                    <div class="med-input-group"><label>Duration</label><input type="text" value="30"></div>
+                                    <div class="med-input-group"><label>Total Duration</label><input type="text" value="30"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="med-accordion-header" onclick="toggleMedDetails('med3')">
+                                <span>Vitamin D3 1000 IU</span>
+                                <i class="fas fa-chevron-down" id="icon-med3"></i>
+                            </div>
+                            <div class="med-details-collapse" id="med3">
+                                <div class="med-details">
+                                    <div><span>Medicin Code</span><strong>776655</strong></div>
+                                    <div><span>Name</span><strong>Vit D3</strong></div>
+                                    <div><span>Dosage</span><strong>1</strong></div>
+                                    <div><span>Package Size</span><strong>1</strong></div>
+                                    <div><span>Unit Number</span><strong>1</strong></div>
+                                    <div><span>Unit Price</span><strong>120</strong></div>
+                                    <div><span>Approved Quantity</span><strong>1</strong></div>
+                                    <div><span>Group</span><strong>2</strong></div>
+                                </div>
+                            </div>
+
+                            <div class="med-footer">
+                                <span class="status-badge">Individual Dispense</span>
+                                <button class="btn btn-danger"><i class="fas fa-trash"></i> Remove Medicine</button>
+                            </div>
+                        </div>
+
                     </div>
-
-                    <!-- Medicine 2 -->
-                    <div class="medicine-item">
-                        <div class="med-header">
-                            <div class="med-image">
-                                <i class="fas fa-tablets"></i>
-                                <span style="font-size: 0.6rem; margin-top: 5px;">Paracetamol</span>
-                            </div>
-                            <div class="med-inputs">
-                                <div class="med-input-group"><label>Package Price</label><input type="text" value="50"></div>
-                                <div class="med-input-group"><label>Dose</label><input type="text" value="1"></div>
-                                <div class="med-input-group"><label>Duration</label><input type="text" value="5"></div>
-                                <div class="med-input-group"><label>Total Duration</label><input type="text" value="5"></div>
-                            </div>
-                        </div>
-                        
-                        <!-- Accordion for Med Details -->
-                        <div class="med-accordion-header" onclick="toggleMedDetails('med2')">
-                            <span>Paracetamol 500 mg</span>
-                            <i class="fas fa-chevron-down" id="icon-med2"></i>
-                        </div>
-                        <div class="med-details-collapse" id="med2">
-                            <div class="med-details">
-                                <div><span>Medicin Code</span><strong>982311</strong></div>
-                                <div><span>Name</span><strong>Panadol</strong></div>
-                                <div><span>Dosage</span><strong>1</strong></div>
-                                <div><span>Package Size</span><strong>1</strong></div>
-                                <div><span>Unit Number</span><strong>1</strong></div>
-                                <div><span>Unit Price</span><strong>50</strong></div>
-                                <div><span>Approved Quantity</span><strong>1</strong></div>
-                                <div><span>Group</span><strong>2</strong></div>
-                            </div>
-                        </div>
-
-                        <div class="med-footer">
-                            <span class="status-badge">Individual Dispense</span>
-                            <button class="btn btn-danger"><i class="fas fa-trash"></i> Remove Medicine</button>
-                        </div>
-                    </div>
-
-                    <!-- Medicine 3 -->
-                    <div class="medicine-item">
-                        <div class="med-header">
-                            <div class="med-image">
-                                <i class="fas fa-capsules"></i>
-                                <span style="font-size: 0.6rem; margin-top: 5px;">Vitamin D3</span>
-                            </div>
-                            <div class="med-inputs">
-                                <div class="med-input-group"><label>Package Price</label><input type="text" value="120"></div>
-                                <div class="med-input-group"><label>Dose</label><input type="text" value="1"></div>
-                                <div class="med-input-group"><label>Duration</label><input type="text" value="30"></div>
-                                <div class="med-input-group"><label>Total Duration</label><input type="text" value="30"></div>
-                            </div>
-                        </div>
-                        
-                        <!-- Accordion for Med Details -->
-                        <div class="med-accordion-header" onclick="toggleMedDetails('med3')">
-                            <span>Vitamin D3 1000 IU</span>
-                            <i class="fas fa-chevron-down" id="icon-med3"></i>
-                        </div>
-                        <div class="med-details-collapse" id="med3">
-                            <div class="med-details">
-                                <div><span>Medicin Code</span><strong>776655</strong></div>
-                                <div><span>Name</span><strong>Vit D3</strong></div>
-                                <div><span>Dosage</span><strong>1</strong></div>
-                                <div><span>Package Size</span><strong>1</strong></div>
-                                <div><span>Unit Number</span><strong>1</strong></div>
-                                <div><span>Unit Price</span><strong>120</strong></div>
-                                <div><span>Approved Quantity</span><strong>1</strong></div>
-                                <div><span>Group</span><strong>2</strong></div>
-                            </div>
-                        </div>
-
-                        <div class="med-footer">
-                            <span class="status-badge">Individual Dispense</span>
-                            <button class="btn btn-danger"><i class="fas fa-trash"></i> Remove Medicine</button>
-                        </div>
-                    </div>
-
                 </div>
 
                 <!-- Pending Tab Content -->
                 <div id="pending-tab" class="tab-content">
                     
-                    <!-- Pending Medicine 1 -->
-                    <div class="medicine-item" style="border-color: var(--success); background-color: #f0fdf4;">
-                        <div class="med-header">
-                            <div class="med-image" style="color: var(--success);">
-                                <i class="fas fa-check-circle"></i>
-                                <span style="font-size: 0.6rem; margin-top: 5px;">Approved</span>
+                    <div class="medicine-list-container">
+                        <!-- Pending Medicine 1 -->
+                        <div class="medicine-item" style="border-color: var(--success); background-color: #f0fdf4;">
+                            <div class="med-header">
+                                <div class="med-image" style="color: var(--success);">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span style="font-size: 0.55rem; margin-top: 3px;">Approved</span>
+                                </div>
+                                <div class="med-inputs">
+                                    <div class="med-input-group"><label>Package Price</label><input type="text" value="150"></div>
+                                    <div class="med-input-group"><label>Dose</label><input type="text" value="1"></div>
+                                    <div class="med-input-group"><label>Duration</label><input type="text" value="7"></div>
+                                    <div class="med-input-group"><label>Total Duration</label><input type="text" value="7"></div>
+                                </div>
                             </div>
-                            <div class="med-inputs">
-                                <div class="med-input-group"><label>Package Price</label><input type="text" value="150"></div>
-                                <div class="med-input-group"><label>Dose</label><input type="text" value="1"></div>
-                                <div class="med-input-group"><label>Duration</label><input type="text" value="7"></div>
-                                <div class="med-input-group"><label>Total Duration</label><input type="text" value="7"></div>
+                            <div class="med-footer">
+                                <span class="status-badge approved"><i class="fas fa-check"></i> Approved by System</span>
+                                <button class="btn btn-dispense" style="background: var(--success); color: white; border: none;">Dispense Now</button>
                             </div>
                         </div>
-                        <div class="med-footer">
-                            <span class="status-badge approved"><i class="fas fa-check"></i> Approved by System</span>
-                            <button class="btn btn-dispense" style="background: var(--success); color: white; border: none;">Dispense Now</button>
-                        </div>
-                    </div>
 
-                    <!-- Pending Medicine 2 -->
-                    <div class="medicine-item" style="border-color: var(--success); background-color: #f0fdf4;">
-                        <div class="med-header">
-                            <div class="med-image" style="color: var(--success);">
-                                <i class="fas fa-check-circle"></i>
-                                <span style="font-size: 0.6rem; margin-top: 5px;">Approved</span>
+                        <!-- Pending Medicine 2 -->
+                        <div class="medicine-item" style="border-color: var(--success); background-color: #f0fdf4;">
+                            <div class="med-header">
+                                <div class="med-image" style="color: var(--success);">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span style="font-size: 0.55rem; margin-top: 3px;">Approved</span>
+                                </div>
+                                <div class="med-inputs">
+                                    <div class="med-input-group"><label>Package Price</label><input type="text" value="80"></div>
+                                    <div class="med-input-group"><label>Dose</label><input type="text" value="2"></div>
+                                    <div class="med-input-group"><label>Duration</label><input type="text" value="5"></div>
+                                    <div class="med-input-group"><label>Total Duration</label><input type="text" value="5"></div>
+                                </div>
                             </div>
-                            <div class="med-inputs">
-                                <div class="med-input-group"><label>Package Price</label><input type="text" value="80"></div>
-                                <div class="med-input-group"><label>Dose</label><input type="text" value="2"></div>
-                                <div class="med-input-group"><label>Duration</label><input type="text" value="5"></div>
-                                <div class="med-input-group"><label>Total Duration</label><input type="text" value="5"></div>
+                            <div class="med-footer">
+                                <span class="status-badge approved"><i class="fas fa-check"></i> Approved by System</span>
+                                <button class="btn btn-dispense" style="background: var(--success); color: white; border: none;">Dispense Now</button>
                             </div>
-                        </div>
-                        <div class="med-footer">
-                            <span class="status-badge approved"><i class="fas fa-check"></i> Approved by System</span>
-                            <button class="btn btn-dispense" style="background: var(--success); color: white; border: none;">Dispense Now</button>
                         </div>
                     </div>
                 </div>
 
-                <div style="flex: 1;"></div>
-                
-                <!-- Totals Section -->
+                <!-- Totals Section (Now Always Visible) -->
                 <div class="totals-section">
                     <div class="action-buttons">
                         <button class="btn" style="background-color: var(--primary-dark);">Dispense All</button>
