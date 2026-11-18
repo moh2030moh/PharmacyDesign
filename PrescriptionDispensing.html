@@ -19,6 +19,12 @@
             --danger: #ef4444;
             --danger-bg: #fee2e2;
             --success: #10b981;
+            
+            /* Light Green Theme Variables */
+            --green-bg: #d1fae5;
+            --green-border: #6ee7b7;
+            --green-text: #047857;
+            --green-hover: #a7f3d0;
         }
 
         * {
@@ -34,8 +40,8 @@
             padding: 15px;
             display: flex;
             justify-content: center;
-            height: 100vh; /* Fixed height to prevent page scroll */
-            overflow: hidden; /* Hide outer scrollbar */
+            height: 100vh;
+            overflow: hidden;
         }
 
         .main-layout {
@@ -62,7 +68,7 @@
         }
 
         .left-column .card { 
-            height: 100%; /* Fill the entire left column height */
+            height: 100%;
             display: flex;
             flex-direction: column;
         }
@@ -79,7 +85,6 @@
             flex-shrink: 0;
         }
 
-        /* Card Body takes remaining space and manages its own scroll */
         .card-body { 
             padding: 15px; 
             flex: 1; 
@@ -144,13 +149,13 @@
         .btn-danger { background-color: transparent; color: var(--danger); padding: 0; font-size: 0.75rem; justify-content: flex-start; }
         .btn-danger:hover { background-color: transparent; text-decoration: underline; }
 
-        /* Permissions Checkbox */
+        /* Permissions Checkbox (Now Green) */
         .permission-checkbox-wrapper {
             display: flex;
             align-items: center;
             gap: 8px;
-            background-color: var(--white);
-            border: 1px solid var(--border-color);
+            background-color: var(--green-bg);
+            border: 1px solid var(--green-border);
             padding: 6px 10px;
             border-radius: 6px;
             margin-top: 8px;
@@ -159,18 +164,18 @@
             transition: 0.3s;
         }
         .permission-checkbox-wrapper:hover {
-            background-color: #f8fafc;
+            background-color: var(--green-hover);
         }
         .permission-checkbox-wrapper input[type="checkbox"] {
             width: 16px;
             height: 16px;
             cursor: pointer;
-            accent-color: var(--primary-dark);
+            accent-color: var(--green-text);
         }
         .permission-checkbox-wrapper label {
             font-size: 0.8rem;
             font-weight: 700;
-            color: var(--primary-dark);
+            color: var(--green-text);
             cursor: pointer;
             margin: 0;
         }
@@ -206,72 +211,103 @@
         .tab-content { display: none; flex-direction: column; flex: 1; overflow: hidden; }
         .tab-content.active { display: flex; }
 
-        /* --- Registered Medicines (Horizontal Layout) --- */
-        .registered-section {
+        /* --- Dispensing Registration Section (Compact Grid 3 Columns) --- */
+        .dispensing-section {
             margin-bottom: 10px;
-            background-color: var(--primary-light);
-            padding: 10px;
+            background-color: var(--green-bg);
+            padding: 10px 12px; /* Reduced padding */
             border-radius: 10px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--green-border);
             flex-shrink: 0;
         }
 
-        .registered-title {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--primary-dark);
+        .dispensing-section .section-title {
+            color: var(--green-text);
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            font-size: 0.85rem;
         }
 
-        .registered-row {
-            display: flex;
-            gap: 8px;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            padding-bottom: 2px;
+        .dispensing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            gap: 8px 12px; /* Reduced gap */
+        }
+
+        .dispensing-section .input-group {
+            margin-bottom: 0; /* Remove bottom margin to save space */
+        }
+
+        .dispensing-section .input-group label {
+            color: var(--green-text);
+            font-size: 0.7rem; /* Smaller label */
+            margin-bottom: 2px;
+        }
+
+        .dispensing-section .input-wrapper {
+            background-color: var(--white);
+            border-color: var(--green-border);
+            padding: 4px 8px; /* Smaller padding inside inputs */
+        }
+
+        .dispensing-section .input-wrapper input {
+            font-size: 0.8rem; /* Smaller text */
+        }
+
+        .dispensing-section .input-wrapper i {
+            color: var(--green-text);
+            font-size: 0.7rem;
+        }
+
+        /* --- Registered Medicines (Right Column Vertical Layout) --- */
+        .registered-list { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            overflow-y: auto;
+            flex: 1;
         }
 
         .reg-card {
-            background-color: var(--white);
+            background-color: var(--primary-light);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 8px 12px;
+            padding: 10px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex: 1;
-            min-width: 150px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
 
         .reg-card-info {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
         }
 
         .reg-card-name {
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: var(--text-dark);
         }
 
         .reg-card-type {
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             color: var(--primary-dark);
             font-weight: 600;
+            background: var(--white);
+            padding: 2px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            width: fit-content;
         }
 
         .btn-dispense-small {
-            background-color: var(--primary-dark);
-            color: var(--white);
-            border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
+            background-color: var(--white);
+            color: var(--primary-dark);
+            border: 1px solid var(--primary-dark);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
@@ -279,13 +315,14 @@
         }
 
         .btn-dispense-small:hover {
-            background-color: #0369a1;
+            background-color: var(--primary-dark);
+            color: var(--white);
         }
 
         /* --- Medicine Items Scrollable Container --- */
         .medicine-list-container {
-            flex: 1; /* Takes remaining space */
-            overflow-y: auto; /* Scrolls if content exceeds */
+            flex: 1; 
+            overflow-y: auto; 
             padding-right: 5px;
             margin-bottom: 10px;
             border-radius: 8px;
@@ -297,7 +334,7 @@
         .medicine-list-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         .medicine-list-container::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        /* Medicine Item Styling with Alternating Colors */
+        /* Medicine Item Styling */
         .medicine-item {
             border: 1px solid var(--border-color);
             border-radius: 10px; 
@@ -357,9 +394,9 @@
         .totals-section {
             display: flex; justify-content: space-between; align-items: center;
             background-color: var(--primary-light); padding: 10px; border-radius: 8px;
-            margin-top: auto; /* Pushes to bottom */
+            margin-top: auto; 
             gap: 15px;
-            flex-shrink: 0; /* Prevents shrinking */
+            flex-shrink: 0; 
         }
         .action-buttons { display: flex; flex-direction: column; gap: 8px; flex: 1; }
         .action-buttons .btn { padding: 10px 15px; font-size: 0.9rem; width: 100%; }
@@ -429,18 +466,17 @@
 
         /* Responsive adjustments */
         @media (max-width: 1100px) {
-            body { height: auto; overflow: auto; } /* Allow page scroll on small screens */
+            body { height: auto; overflow: auto; }
             .main-layout { flex-direction: column; height: auto; }
             .right-column, .left-column { width: 100%; }
             .left-column .card { height: auto; }
-            .medicine-list-container { max-height: 400px; } /* Fixed height for mobile */
+            .medicine-list-container { max-height: 400px; }
         }
         @media (max-width: 768px) {
+            .dispensing-grid { grid-template-columns: 1fr 1fr; } /* 2 columns on mobile */
             .grid-2, .med-inputs, .med-details, .totals-grid { grid-template-columns: 1fr; }
             .totals-section { flex-direction: column; }
             .action-buttons { flex-direction: row; width: 100%; }
-            .registered-row { flex-direction: column; }
-            .reg-card { width: 100%; }
         }
     </style>
 </head>
@@ -451,10 +487,10 @@
     <!-- Right Column (35%) -->
     <div class="right-column">
         
-        <!-- Combined Card -->
+        <!-- Patient Card -->
         <div class="card">
             <div class="card-header">
-                <div><i class="fas fa-user-md"></i> Patient & Dispensing Info</div>
+                <div><i class="fas fa-user-md"></i> Patient Info</div>
                 <i class="fas fa-info-circle"></i>
             </div>
             <div class="card-body">
@@ -487,44 +523,44 @@
                 <div class="patient-details-collapse" id="patientDetails">
                     <div class="info-grid">
                         <div class="info-item"><span>Start Date</span><strong>1/1/2024</strong></div>
-                        <div class="info-item"><span>Birth Date</span><strong>2/5/2000</strong></div>
-                        <div class="info-item"><span>Start Date</span><strong>1/1/2024</strong></div>
-                        <div class="info-item"><span>End Date</span><strong>12/11/2026</strong></div>
+                        <div class="info-item"><span>End Date</span><strong>2/5/2000</strong></div>
+                        <div class="info-item"><span>Birth Date</span><strong>12/11/2026</strong></div>
                         <div class="info-item"><span>Comp Name</span><strong>DMS</strong></div>
                         <div class="info-item"><span>Company Percent</span><strong>75%</strong></div>
                     </div>
                 </div>
 
-                <hr class="section-divider">
+            </div>
+        </div>
 
-                <div class="section-title">
-                    <i class="fas fa-file-medical"></i> 2. Dispensing Registration
-                </div>
-                
-                <div class="grid-2">
-                    <div class="input-group">
-                        <label>Claim Number</label>
-                        <div class="input-wrapper"><input type="text" value="1212125"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
+        <!-- Registered Medicines -->
+        <div class="card" style="flex: 1;">
+            <div class="card-header">
+                <div><i class="fas fa-list-ul"></i> 4. Registered Medicines</div>
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="card-body" style="padding: 10px;">
+                <div class="registered-list">
+                    <div class="reg-card">
+                        <div class="reg-card-info">
+                            <span class="reg-card-name">Amoxicillin 500 mg</span>
+                            <span class="reg-card-type">Daily</span>
+                        </div>
+                        <button class="btn-dispense-small">Dispense</button>
                     </div>
-                    <div class="input-group">
-                        <label>Phone Number</label>
-                        <div class="input-wrapper"><input type="text" value="0112566552"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
+                    <div class="reg-card">
+                        <div class="reg-card-info">
+                            <span class="reg-card-name">Vitamin D3 1000 IU</span>
+                            <span class="reg-card-type">Chronic</span>
+                        </div>
+                        <button class="btn-dispense-small">Dispense</button>
                     </div>
-                    <div class="input-group">
-                        <label>Speciality</label>
-                        <div class="input-wrapper"><input type="text" value="صدى"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
-                    </div>
-                    <div class="input-group">
-                        <label>Diagnosis</label>
-                        <div class="input-wrapper"><input type="text" value="FDGJJSK"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
-                    </div>
-                    <div class="input-group">
-                        <label>Prescription Date</label>
-                        <div class="input-wrapper"><input type="text" value="10/11/2026"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
-                    </div>
-                    <div class="input-group">
-                        <label>Type</label>
-                        <div class="input-wrapper"><input type="text" value="Daily"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0; font-size: 0.7rem;"></i></div>
+                    <div class="reg-card">
+                        <div class="reg-card-info">
+                            <span class="reg-card-name">Paracetamol 500 mg</span>
+                            <span class="reg-card-type">Doctor Flow</span>
+                        </div>
+                        <button class="btn-dispense-small">Dispense</button>
                     </div>
                 </div>
             </div>
@@ -552,37 +588,40 @@
         
         <div class="card">
             <div class="card-header">
-                <div><i class="fas fa-pills"></i> 3. Medicines & Dispensing</div>
+                <div><i class="fas fa-pills"></i> 2. Medicines & Dispensing</div>
                 <i class="fas fa-info-circle"></i>
             </div>
             <div class="card-body">
                 
-                <!-- Registered Medicines Section -->
-                <div class="registered-section">
-                    <div class="registered-title">
-                        <i class="fas fa-list-ul"></i> 4. Registered Medicines
+                <!-- Dispensing Registration (Compact 3-column layout) -->
+                <div class="dispensing-section">
+                    <div class="section-title">
+                        <i class="fas fa-file-medical"></i> 2. Dispensing Registration
                     </div>
-                    <div class="registered-row">
-                        <div class="reg-card">
-                            <div class="reg-card-info">
-                                <span class="reg-card-name">Amoxicillin 500 mg</span>
-                                <span class="reg-card-type">Daily</span>
-                            </div>
-                            <button class="btn-dispense-small">Dispense</button>
+                    <div class="dispensing-grid">
+                        <div class="input-group">
+                            <label>Claim Number</label>
+                            <div class="input-wrapper"><input type="text" value="1212125"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0;"></i></div>
                         </div>
-                        <div class="reg-card">
-                            <div class="reg-card-info">
-                                <span class="reg-card-name">Vitamin D3 1000 IU</span>
-                                <span class="reg-card-type">Chronic</span>
-                            </div>
-                            <button class="btn-dispense-small">Dispense</button>
+                        <div class="input-group">
+                            <label>Phone Number</label>
+                            <div class="input-wrapper"><input type="text" value="0112566552"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0;"></i></div>
                         </div>
-                        <div class="reg-card">
-                            <div class="reg-card-info">
-                                <span class="reg-card-name">Paracetamol 500 mg</span>
-                                <span class="reg-card-type">Doctor Flow</span>
-                            </div>
-                            <button class="btn-dispense-small">Dispense</button>
+                        <div class="input-group">
+                            <label>Speciality</label>
+                            <div class="input-wrapper"><input type="text" value="صدى"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0;"></i></div>
+                        </div>
+                        <div class="input-group">
+                            <label>Diagnosis</label>
+                            <div class="input-wrapper"><input type="text" value="FDGJJSK"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0;"></i></div>
+                        </div>
+                        <div class="input-group">
+                            <label>Prescription Date</label>
+                            <div class="input-wrapper"><input type="text" value="10/11/2026"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0;"></i></div>
+                        </div>
+                        <div class="input-group">
+                            <label>Type</label>
+                            <div class="input-wrapper"><input type="text" value="Daily"><i class="fas fa-pen" style="margin-left: auto; margin-right: 0;"></i></div>
                         </div>
                     </div>
                 </div>
@@ -609,7 +648,6 @@
                 <!-- Normal Tab Content -->
                 <div id="normal-tab" class="tab-content active">
                     
-                    <!-- Scrollable Medicine List Container -->
                     <div class="medicine-list-container">
                         
                         <!-- Medicine 1 -->
@@ -775,7 +813,7 @@
                     </div>
                 </div>
 
-                <!-- Totals Section (Now Always Visible) -->
+                <!-- Totals Section -->
                 <div class="totals-section">
                     <div class="action-buttons">
                         <button class="btn" style="background-color: var(--primary-dark);">Dispense All</button>
